@@ -21,14 +21,6 @@
 "CustomEvents"
 {
     // Stat collection
-    "stat_collection_part"
-    {
-        "data"          "string"
-    }
-
-    "stat_collection_send"
-    {
-    }
 
     "stat_collection_steamID"
     {
@@ -43,4 +35,6 @@
         "8"             "long"
         "9"             "long"
     }
+
+    // End Stat Collection
 }

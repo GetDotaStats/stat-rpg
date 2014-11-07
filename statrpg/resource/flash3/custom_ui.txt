@@ -7,7 +7,7 @@
     }
     "2"
     {
-        "File" "StatsCollection"
+        "File" "StatsCollectionRPG"
         "Depth" "1"
     }
 }

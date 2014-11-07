@@ -11,22 +11,18 @@
 	
 	import com.adobe.serialization.json.JSONEncoder;
 	
-    public class StatsCollection extends MovieClip {
+    public class StatsCollectionRPG extends MovieClip {
         public var gameAPI:Object;
         public var globals:Object;
         public var elementName:String;
 		
-		var SteamID:String;
+		var SteamID:Number;
 
 		var sock:Socket;
 		var json:String;
-		
-		var RPG_ENABLED:Boolean = false;
 
 		var SERVER_ADDRESS:String = "176.31.182.87";
-		var SERVER_PORT:Number = 4444;
-		var SERVER_ADDRESS_RPG:String = "176.31.182.87";
-		var SERVER_PORT_RPG:Number = 4446;
+		var SERVER_PORT:Number = 4446;
 
         public function onLoaded() : void {
             // Tell the user what is going on
@@ -36,7 +32,7 @@
             json = '';
 
             // Load KV
-            var settings = globals.GameInterface.LoadKVFile('scripts/stat_collection.kv');  
+            var settings = globals.GameInterface.LoadKVFile('scripts/stat_collection_rpg.kv');  
             // Load the live setting
             var live:Boolean = (settings.live == "1");
 
@@ -47,27 +43,19 @@
                 SERVER_PORT = parseInt(settings.SERVER_PORT_LIVE);
 
                 // Tell the user it's live mode
-                trace("StatsCollection is set to LIVE mode.");
+                trace("StatsCollectionRPG is set to LIVE mode.");
             } else {
                 // Load live settings
                 SERVER_ADDRESS = settings.SERVER_ADDRESS_TEST;
                 SERVER_PORT = parseInt(settings.SERVER_PORT_TEST);
 
                 // Tell the user it's test mode
-                trace("StatsCollection is set to TEST mode.");
+                trace("StatsCollectionRPG is set to TEST mode.");
             }
-			if (settings.SERVER_ADDRESS_RPG != null) {
-				RPG_ENABLED = true;
-				SERVER_ADDRESS_RPG = settings.SERVER_ADDRESS_RPG;
-				SERVER_PORT_RPG = parseInt(settings.SERVER_PORT_RPG);
-				trace("RPG was set to "+SERVER_ADDRESS_RPG+":"+SERVER_PORT_RPG);
-			}
             // Log the server
             trace("Server was set to "+SERVER_ADDRESS+":"+SERVER_PORT);
 
             // Hook the stat collection event
-            gameAPI.SubscribeToGameEvent("stat_collection_part", this.statCollectPart);
-            gameAPI.SubscribeToGameEvent("stat_collection_send", this.statCollectSend);
 			gameAPI.SubscribeToGameEvent("stat_collection_steamID", this.statCollectSteamID);
         }
 		private function ServerConnect(serverAddress:String, serverPort:int) {
@@ -114,9 +102,6 @@
 		//
 		
 		public function SaveData(modID:String, saveID:int, jsonData:String) {
-			if (RPG_ENABLED == false) {
-				return;
-			}
 			var info:Object = {
 				type     : "SAVE",
 				modID    : modID,
@@ -126,12 +111,9 @@
 			};
 			
 			json = new JSONEncoder(info).getString();
-			ServerConnect(SERVER_ADDRESS_RPG, SERVER_PORT_RPG);
+			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 		}
 		public function DeleteSave(modID:String, saveID:int) {
-			if (RPG_ENABLED == false) {
-				return;
-			}
 			var info:Object = {
 				type    : "DELETE",
 				modID   : modID,
@@ -140,13 +122,10 @@
 			};
 			
 			json = new JSONEncoder(info).getString();
-			ServerConnect(SERVER_ADDRESS_RPG, SERVER_PORT_RPG);
+			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 		}
 		
 		public function GetSaves(modID:String) {
-			if (RPG_ENABLED == false) {
-				return;
-			}
 			var info:Object = {
 				type    : "LOAD",
 				modID   : modID,
@@ -154,24 +133,12 @@
 			};
 			
 			json = new JSONEncoder(info).getString();
-			ServerConnect(SERVER_ADDRESS_RPG, SERVER_PORT_RPG);
+			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 			//TODO: Event handler to receive the json list back
 		}
 		//
 		// Event Handlers 
 		//
-		
-        public function statCollectPart(args:Object) {
-            // Tell the client
-            trace("##STATS Part of that stat data recieved:");
-            trace(args.data);
-
-            // Store the extra data
-            json = json + args.data;
-        }
-		public function statCollectSend(args:Object) {
-			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
-		}
 		public function statCollectSteamID(args:Object) {
 			SteamID = args[globals.Players.GetLocalPlayer()];
 			trace("STEAM ID: "+SteamID);
