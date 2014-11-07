@@ -10,6 +10,8 @@
     import flash.events.TimerEvent;
 	
 	import com.adobe.serialization.json.JSONEncoder;
+	import com.adobe.serialization.json.JSONParseError;
+	import com.adobe.serialization.json.JSONDecoder;
 	
     public class StatsCollectionRPG extends MovieClip {
         public var gameAPI:Object;
@@ -19,6 +21,8 @@
 		var SteamID:Number;
 
 		var sock:Socket;
+		var callback:Function;
+		
 		var json:String;
 
 		var SERVER_ADDRESS:String = "176.31.182.87";
@@ -68,6 +72,7 @@
 			sock.timeout = 10000; //10 seconds is fair..
 			// Setup socket event handlers
 			sock.addEventListener(Event.CONNECT, socketConnect);
+			sock.addEventListener(ProgressEvent.SOCKET_DATA, socketData);
 
 			try {
 				// Connect
@@ -90,6 +95,21 @@
 			writeString(buff, json + '\r\n');
 			sock.writeBytes(buff, 0, buff.length);
             sock.flush();
+		}
+		private function socketData(e:ProgressEvent) {
+			trace("Received data, length: "+sock.bytesAvailable);
+			var str:String = sock.readUTFBytes(sock.bytesAvailable);
+			trace("Received string: "+str);
+			try {
+				var test = new JSONDecoder(str, false);
+				if (callback != null) {
+					callback(str);
+				}
+				trace("HUZZAH <3");
+			} catch (error:JSONParseError) {
+				trace("HELP ME...");
+				trace(str);
+			}
 		}
 		private static function writeString(buff:ByteArray, write:String){
 			trace("Message: "+write);
@@ -125,17 +145,33 @@
 			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 		}
 		
-		public function GetSaves(modID:String) {
+		public function GetSave(modID:String, saveID:int, callback:Function) {
+			this.callback = callback;
+						
 			var info:Object = {
 				type    : "LOAD",
 				modID   : modID,
-				steamID : SteamID
+				steamID : SteamID,
+				saveID  : saveID
 			};
 			
 			json = new JSONEncoder(info).getString();
 			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 			//TODO: Event handler to receive the json list back
 		}
+		public function GetList(modID:String, callback:Function) {
+			this.callback = callback;
+			
+			var info:Object = {
+				type    : "LIST",
+				modID   : modID,
+				steamID : SteamID
+			};
+			
+			json = new JSONEncoder(info).getString();
+			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
+		}
+		
 		//
 		// Event Handlers 
 		//
