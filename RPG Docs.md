@@ -16,6 +16,7 @@ INSERT ANOTHER DESCRIPTION HERE
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
 |jsonData  |JSON          |The data of this character save.
+|metaData  |String        |The metaData of this character save. It can be anything including JSON
 
 #### DELETE ####
 |Field Name|Field DataType|Field Description
@@ -64,4 +65,4 @@ INSERT YET ANOTHER DESCRIPTION HERE
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
 |type      |String        |Always "list", as thats this packet..
-|jsonData  |Array of JSON |Contains an array of character metadata.
+|jsonData  |Array of JSON |Contains an array of character metadata. For now this is simply the saveID and metaData
