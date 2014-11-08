@@ -2,13 +2,68 @@ GetDotaStats Stat-Collection
 =====
 
 ###About###
- - The code and concept is very much a work in progress. Please refer to http://getdotastats.com/#d2mods__guide for a detailed guide, and for up to date contact details (at the bottom).
- - This repo should contain all of the code required to get stats working. Make sure to go through each file and adapt as required. It has been stripped back to just the parts you need to implement. It will not work "out of the box", without some adaptation.
+ - This repo allows mods to have persistant data over multiple plays. It would be most useful for RPGs.
  
-###Credits###
- - Big thanks to SinZ163, Tet, and Ash47 for their hard-work in testing and developing the Lua and Flash code that makes this all possible. I take no credit for the Lua and Flash found in this repo, as I have just collated and reformatted it.
+# GetDotaStats - StatCollectionRPG specs 1.0 #
 
-###Implementations###
- - Ash47 (live) [Legends of Dota] - https://github.com/ash47/LegendsOfDota
- - Amused (live) [Enfos] - https://github.com/D3luxe/Enfos
- - SinZ163 (test) [Trolls and Elves] - https://github.com/SinZ163/TrollsAndElves
+## Client --> Server ##
+INSERT ANOTHER DESCRIPTION HERE
+
+#### SAVE ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "SAVE", as thats this packet..
+|modID     |String        |The modID allocated by GetDotaStats
+|steamID   |Long          |The SteamID of the owner of this save.
+|saveID    |Integer       |The unique save ID for this character, for this user.
+|jsonData  |JSON          |The data of this character save.
+|metaData  |String        |The metaData of this character save. It can be anything including JSON. It could be as simple as a name that users can set for their saves, or as complicated as something that will help render a snapshot of a character. This field must be lean, so that the LIST does not waste bandwidth!
+
+#### DELETE ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "DELETE", as thats this packet..
+|modID     |String        |The modID allocated by GetDotaStats
+|steamID   |Long          |The SteamID of the owner of this save.
+|saveID    |Integer       |The unique save ID for this character, for this user.
+
+#### LOAD ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "LOAD", as thats this packet..
+|modID     |String        |The modID allocated by GetDotaStats
+|steamID   |Long          |The SteamID of the owner of this save.
+|saveID    |Integer       |The unique save ID for this character, for this user.
+
+#### LIST ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "LIST", as thats this packet..
+|modID     |String        |The modID allocated by GetDotaStats
+|steamID   |Long          |The SteamID of the owner of this save.
+
+
+## Server --> Client ##
+INSERT YET ANOTHER DESCRIPTION HERE
+
+#### success ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "success", as thats this packet..
+
+#### failure ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "failure", as thats this packet..
+
+#### load ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "load", as thats this packet..
+|jsonData  |JSON          |The data of this character save.
+
+#### list (10 most recent only) ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "list", as thats this packet..
+|jsonData  |Array of JSON |Contains an array of character metadata. For now this is simply the saveID and metaData
