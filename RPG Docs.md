@@ -61,7 +61,7 @@ INSERT YET ANOTHER DESCRIPTION HERE
 |type      |String        |Always "load", as thats this packet..
 |jsonData  |JSON          |The data of this character save.
 
-#### list ####
+#### list (10 most recent only) ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
 |type      |String        |Always "list", as thats this packet..
