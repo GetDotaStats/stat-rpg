@@ -101,9 +101,9 @@
 			var str:String = sock.readUTFBytes(sock.bytesAvailable);
 			trace("Received string: "+str);
 			try {
-				var test = new JSONDecoder(str, false);
+				var test = new JSONDecoder(str, false).getValue();
 				if (callback != null) {
-					callback(str);
+					callback(test["jsonData"]);
 				}
 				trace("HUZZAH <3");
 			} catch (error:JSONParseError) {
@@ -121,13 +121,14 @@
 		// RPG API
 		//
 		
-		public function SaveData(modID:String, saveID:int, jsonData:String) {
+		public function SaveData(modID:String, saveID:int, jsonData:String, metaData:String) {
 			var info:Object = {
 				type     : "SAVE",
 				modID    : modID,
 				steamID  : SteamID,
 				saveID   : saveID,
-				jsonData : jsonData
+				jsonData : jsonData,
+				metaData : metaData
 			};
 			
 			json = new JSONEncoder(info).getString();

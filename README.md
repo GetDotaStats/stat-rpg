@@ -3,7 +3,7 @@ GetDotaStats Stat-Collection
 
 ###About###
  - This repo allows mods to have persistant data over multiple plays. It would be most useful for RPGs.
- 
+
 # GetDotaStats - StatCollectionRPG specs 1.0 #
 
 ## Client --> Server ##
@@ -17,7 +17,7 @@ INSERT ANOTHER DESCRIPTION HERE
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
 |jsonData  |JSON          |The data of this character save.
-|metaData  |String        |The metaData of this character save. It can be anything including JSON. It could be as simple as a name that users can set for their saves, or as complicated as something that will help render a snapshot of a character. This field must be lean, so that the LIST does not waste bandwidth!
+|metaData  |JSON          |The metaData of this character save. It can be anything including JSON. It could be as simple as a name that users can set for their saves, or as complicated as something that will help render a snapshot of a character. This field must be lean, so that the LIST does not waste bandwidth!
 
 #### DELETE ####
 |Field Name|Field DataType|Field Description
