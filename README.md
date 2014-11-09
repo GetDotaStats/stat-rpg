@@ -12,7 +12,7 @@ INSERT ANOTHER DESCRIPTION HERE
 #### SAVE ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "SAVE", as thats this packet..
+|type      |String        |Always "SAVE", as thats this packet
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
@@ -22,7 +22,7 @@ INSERT ANOTHER DESCRIPTION HERE
 #### DELETE ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "DELETE", as thats this packet..
+|type      |String        |Always "DELETE", as thats this packet
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
@@ -30,7 +30,7 @@ INSERT ANOTHER DESCRIPTION HERE
 #### LOAD ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "LOAD", as thats this packet..
+|type      |String        |Always "LOAD", as thats this packet
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
@@ -38,7 +38,14 @@ INSERT ANOTHER DESCRIPTION HERE
 #### LIST ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "LIST", as thats this packet..
+|type      |String        |Always "LIST", as thats this packet
+|modID     |String        |The modID allocated by GetDotaStats
+|steamID   |Long          |The SteamID of the owner of this save.
+
+#### CREATE ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "CREATE", as thats this packet
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 
@@ -49,21 +56,28 @@ INSERT YET ANOTHER DESCRIPTION HERE
 #### success ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "success", as thats this packet..
+|type      |String        |Always "success", as thats this packet
 
 #### failure ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "failure", as thats this packet..
+|type      |String        |Always "failure", as thats this packet
+|error     |String        |A string describing the error. Only useful for debugging purposes
 
 #### load ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "load", as thats this packet..
+|type      |String        |Always "load", as thats this packet
 |jsonData  |JSON          |The data of this character save.
 
 #### list (10 most recent only) ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "list", as thats this packet..
+|type      |String        |Always "list", as thats this packet
 |jsonData  |Array of JSON |Contains an array of character metadata. For now this is simply the saveID and metaData
+
+#### CREATE ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
+|type      |String        |Always "list", as thats this packet
+|saveID    |Integer       |The next saveID to use
