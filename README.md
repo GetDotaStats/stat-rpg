@@ -50,7 +50,6 @@ GetDotaStats Stat-Collection
 
 
 ## Server --> Client ##
-INSERT YET ANOTHER DESCRIPTION HERE
 
 #### success ####
 |Field Name|Field DataType|Field Description
@@ -69,13 +68,13 @@ INSERT YET ANOTHER DESCRIPTION HERE
 |type      |String        |Always "load", as thats this packet
 |jsonData  |JSON          |The data of this character save.
 
-#### list (10 most recent only) ####
+#### list (10 most recent for now) ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
 |type      |String        |Always "list", as thats this packet
 |jsonData  |Array of JSON |Contains an array of character metadata. For now this is simply the saveID and metaData
 
-#### CREATE ####
+#### create ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
 |type      |String        |Always "list", as thats this packet
