@@ -7,7 +7,6 @@ GetDotaStats Stat-Collection
 # GetDotaStats - StatCollectionRPG specs 1.0 #
 
 ## Client --> Server ##
-INSERT ANOTHER DESCRIPTION HERE
 
 #### SAVE ####
 |Field Name|Field DataType|Field Description
