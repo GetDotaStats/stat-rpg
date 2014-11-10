@@ -102,10 +102,21 @@
 			trace("Received string: "+str);
 			try {
 				var test = new JSONDecoder(str, false).getValue();
-				if (callback != null) {
-					callback(test["jsonData"]);
+				if (test["type"] == "failure") {
+					trace("###STATS_RPG WHAT DID YOU JUST DO?!?!?!");
+					trace("###STATS_RPG ERROR: "+test["error"]);
+				} else {
+					var returnData;
+					if (test["saveID"] !== undefined) {
+						returnData = test["saveID"];
+					} else {
+						returnData = test["jsonData"];
+					}
+					if (callback != null) {
+						callback(returnData);
+					}
+					trace("HUZZAH <3");
 				}
-				trace("HUZZAH <3");
 			} catch (error:JSONParseError) {
 				trace("HELP ME...");
 				trace(str);
@@ -165,6 +176,18 @@
 			
 			var info:Object = {
 				type    : "LIST",
+				modID   : modID,
+				steamID : SteamID
+			};
+			
+			json = new JSONEncoder(info).getString();
+			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
+		}
+		public function CreateSave(modID:String, callback:Function) {
+			this.callback = callback;
+			
+			var info:Object = {
+				type    : "CREATE",
 				modID   : modID,
 				steamID : SteamID
 			};
