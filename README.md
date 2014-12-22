@@ -79,3 +79,8 @@ GetDotaStats Stat-Collection
 |----------|--------------|-----------------
 |type      |String        |Always "list", as thats this packet
 |saveID    |Integer       |The next saveID to use
+
+## Ports ##
+
+* Test: 4446
+* Live: 4447
