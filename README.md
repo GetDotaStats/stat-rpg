@@ -1,10 +1,9 @@
-GetDotaStats Stat-Collection
+GetDotaStats Stat-RPG
 =====
 
 ###About###
  - This repo allows mods to have persistant data over multiple plays. It would be most useful for RPGs.
 
-# GetDotaStats - StatCollectionRPG specs 1.0 #
 
 ## Client --> Server ##
 
@@ -51,15 +50,16 @@ GetDotaStats Stat-Collection
 
 ## Server --> Client ##
 
-#### success ####
-|Field Name|Field DataType|Field Description
-|----------|--------------|-----------------
-|type      |String        |Always "success", as thats this packet
+Always listen for the error and result fields. If error is populated, then something went wrong and you may want to indicate the raw error to the user in the client, otherwise you may want to communicate the result to the user (optional).
 
-#### failure ####
+#### on success ####
 |Field Name|Field DataType|Field Description
 |----------|--------------|-----------------
-|type      |String        |Always "failure", as thats this packet
+|result    |String        | String describing success, only useful for debugging
+
+#### on failure ####
+|Field Name|Field DataType|Field Description
+|----------|--------------|-----------------
 |error     |String        |A string describing the error. Only useful for debugging purposes
 
 #### load ####
