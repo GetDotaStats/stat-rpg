@@ -17,9 +17,9 @@ Call this function just before a user creates a new character. Keep in mind that
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 
-Client --> {"type":"CREATE","modID":"XXXXXXXXX","steamID":"1234"}
+**Client** --> {"type":"CREATE","modID":"XXXXXXXXX","steamID":"1234"}
 
-Server --> {"type":"create","result":"success","saveID":"1"}
+**Server** --> {"type":"create","result":"success","saveID":"1"}
 
 #### SAVE ####
 
@@ -34,9 +34,9 @@ Call this function when you want to update the data saved for a specific saveID.
 |jsonData  |JSON          |The data of this character save, in the form of a JSON array
 |metaData  |JSON          |The metaData of this character save. It can be anything including JSON. It could be as simple as a name that users can set for their saves, or as complicated as something that will help render a snapshot of a character. This field must be lean, so that the LIST does not waste bandwidth!
 
-Client --> {"type":"SAVE","modID":"XXXXXXXXX","steamID":"1234","saveID":"1","jsonData":"big_array_of_data","metaData":"example_character_save_name"}
+**Client** --> {"type":"SAVE","modID":"XXXXXXXXX","steamID":"1234","saveID":"1","jsonData":[{"test":"value","test2":"value2"}],"metaData":"example_character_save_name"}
 
-Server --> {"type" : "save", "result" : "success"}
+**Server** --> {"type" : "save", "result" : "success"}
 
 #### DELETE ####
 
@@ -49,9 +49,9 @@ Call this function when you want to delete a saveID. The saveID is obtained from
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
 
-Client --> {"type":"DELETE","modID":"XXXXXXXXX","steamID":"1234","saveID":"1"}
+**Client** --> {"type":"DELETE","modID":"XXXXXXXXX","steamID":"1234","saveID":"1"}
 
-Server --> {"type" : "delete", "result" : "success"}
+**Server** --> {"type" : "delete", "result" : "success"}
 
 #### LOAD ####
 
@@ -64,9 +64,9 @@ Call this function when you want to load a specific saveID. The saveID is obtain
 |steamID   |Long          |The SteamID of the owner of this save.
 |saveID    |Integer       |The unique save ID for this character, for this user.
 
-Client --> {"type":"LOAD","modID":"XXXXXXXXX","steamID":"1234","saveID":"1"}
+**Client** --> {"type":"LOAD","modID":"XXXXXXXXX","steamID":"1234","saveID":"1"}
 
-Server --> {"type":"load","result":"success","jsonData":"big_array_of_data"}
+**Server** --> {"type":"load","result":"success","jsonData":[{"test":"value","test2":"value2"}]}
 
 #### LIST ####
 
@@ -78,9 +78,9 @@ Call this function at the start of the game to get a list of all of the user's s
 |modID     |String        |The modID allocated by GetDotaStats
 |steamID   |Long          |The SteamID of the owner of this save.
 
-Client --> {"type":"LIST","modID":"XXXXXXXXX","steamID":"1234"}
+**Client** --> {"type":"LIST","modID":"XXXXXXXXX","steamID":"1234"}
 
-Server --> {"type":"list","result":"success","jsonArray":[{"saveID":1,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:08:53.000Z"},{"saveID":2,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:19:56.000Z"},{"saveID":3,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:20:01.000Z"},{"saveID":4,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:20:06.000Z"}]}
+**Server** --> {"type":"list","result":"success","jsonArray":[{"saveID":1,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:08:53.000Z"},{"saveID":2,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:19:56.000Z"},{"saveID":3,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:20:01.000Z"},{"saveID":4,"metaData":"example_character_save_name","dateRecorded":"2015-03-25T02:20:06.000Z"}]}
 
 ## Server --> Client ##
 
