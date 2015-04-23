@@ -9,6 +9,8 @@
     import flash.utils.Timer;
     import flash.events.TimerEvent;
 	
+	import com.adobe.utils.DateUtil;
+	
 	import com.adobe.serialization.json.JSONEncoder;
 	import com.adobe.serialization.json.JSONParseError;
 	import com.adobe.serialization.json.JSONDecoder;
@@ -26,7 +28,7 @@
 		var json:String;
 
 		var SERVER_ADDRESS:String = "176.31.182.87";
-		var SERVER_PORT:Number = 4446;
+		var SERVER_PORT:Number = 4444;
 
         public function onLoaded() : void {
             // Tell the user what is going on
@@ -102,23 +104,53 @@
 			trace("Received string: "+str);
 			try {
 				var test = new JSONDecoder(str, false).getValue();
-				if (test["type"] == "failure") {
+				if (test["result"] == "failure") {
 					trace("###STATS_RPG WHAT DID YOU JUST DO?!?!?!");
 					trace("###STATS_RPG ERROR: "+test["error"]);
-				} else {
-					var returnData;
-					if (test["saveID"] !== undefined) {
-						returnData = test["saveID"];
-					} else {
-						returnData = test["jsonData"];
+					switch(test["type"]) {
+						case "save":
+						case "delete":
+							callback(false);
+						break;
+						case "list":
+							callback(new Array());
+						break;
+						case "load":
+						case "create":
+							callback(null);
+						break;
 					}
-					if (callback != null) {
-						callback(returnData);
-					}
-					trace("HUZZAH <3");
+					return;
+				}
+				switch(test["type"]) {
+					case "save":
+					case "delete":
+						callback(true);
+					break;
+					case "list":
+						var output:Array = new Array();
+						for each (var entry:Object in test["jsonArray"]) {
+							output.push({
+										"saveID" : entry.saveID,
+										"metaData" : new JSONDecoder(entry.metaData, false).getValue(),
+										"dateRecorded" : DateUtil.parseW3CDTF(entry.dateRecorded)
+										});
+						}
+						callback(output);
+					break;
+					case "load":
+						trace("We had a load reply");
+						callback(test["jsonData"]);
+					break;
+					case "create":
+						callback(test["saveID"]);
+					break;
+					default:
+						trace("###STATS_RPG Unknown packet: "+test["type"]);
+					break;
 				}
 			} catch (error:JSONParseError) {
-				trace("HELP ME...");
+				trace("###STATS_RPG HELP ME...");
 				trace(str);
 			}
 		}
@@ -132,20 +164,26 @@
 		// RPG API
 		//
 		
-		public function SaveData(modID:String, saveID:int, jsonData:String, metaData:String) {
+		public function SaveData(modID:String, saveID:int, jsonData:Object, metaData:*, callback:Function) {
+			this.callback = callback;
 			var info:Object = {
 				type     : "SAVE",
 				modID    : modID,
 				steamID  : SteamID,
 				saveID   : saveID,
-				jsonData : jsonData,
-				metaData : metaData
+				jsonData : jsonData
 			};
+			if (metaData is String) {
+				info.metaData = metaData;
+			} else {
+				info.metaData = new JSONEncoder(metaData).getString();
+			}
 			
 			json = new JSONEncoder(info).getString();
 			ServerConnect(SERVER_ADDRESS, SERVER_PORT);
 		}
-		public function DeleteSave(modID:String, saveID:int) {
+		public function DeleteSave(modID:String, saveID:int, callback:Function) {
+			this.callback = callback;
 			var info:Object = {
 				type    : "DELETE",
 				modID   : modID,
