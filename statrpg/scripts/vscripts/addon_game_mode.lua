@@ -34,8 +34,15 @@ end
 function YourGamemode:GameThink()
     -- Check to see if the game has finished
     if GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-        -- Send stats
-        statcollection.sendStats()
+		-- Stats Collection Highscores/RPG/Achievements
+		-- This is for Flash to know its steamID
+		j = {}
+		for i=0,9 do
+			j[i+1] = tostring(PlayerResource:GetSteamAccountID(i))
+		end
+		local result = table.concat(j, ",")
+		j = {ids=result}
+		FireGameEvent("stat_collection_steamID", j)
 
         -- Delete the thinker
         return
